@@ -48,11 +48,9 @@ public class DepartamentosController extends HttpServlet {
 		} catch (ServicioException e) {
 			gestionExcepcion(e,request);
 		}
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("DepartamentosJSPController");
-		dispatcher.forward(request,response);
 		
-		//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/departamentos.jsp");
-		//dispatcher.forward(request,response);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/departamentos.jsp");
+		dispatcher.forward(request,response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
