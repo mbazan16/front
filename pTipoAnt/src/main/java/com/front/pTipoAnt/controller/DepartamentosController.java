@@ -1,6 +1,7 @@
 package com.front.pTipoAnt.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,17 +39,20 @@ public class DepartamentosController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("doGet");
 		try {
-			List<Departamento> departamentoes;
+			List<Departamento> departamentos;
 			
-			departamentoes = servicio.findAll();
-			log.info("departamentos"+departamentoes);
-			request.setAttribute("listado", departamentoes);
+			departamentos = new ArrayList<Departamento>();
+			departamentos = servicio.findAll();
+			log.info("departamentos"+departamentos);
+			request.setAttribute("listado", departamentos);
 		} catch (ServicioException e) {
 			gestionExcepcion(e,request);
 		}
-		
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/departamentoes.jsp");
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("DepartamentosJSPController");
 		dispatcher.forward(request,response);
+		
+		//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/departamentos.jsp");
+		//dispatcher.forward(request,response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
