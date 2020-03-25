@@ -1,0 +1,27 @@
+div {
+	flex;
+	display: -ms-flex;
+	display: -moz-flex;
+	display: -o-flex;
+	display: -webkit-flex;
+	flex-flow: column;
+	-ms-flex-flow: column;
+	-moz-flex-flow: column;
+	-o-flex-flow: column;
+	-webkit-flex-flow: column;
+	height: 400px;
+	padding: 1em;
+	outline: 2px solid silver;
+	color: white;
+	font-family: wingdings;
+	font-weight: bold;
+}
+
+p {
+	width: 100px;
+	margin: 1em;
+	height: 100px;
+	background-color: dodgerblue;
+	text-align: center;
+	line-height: 100px;
+}
