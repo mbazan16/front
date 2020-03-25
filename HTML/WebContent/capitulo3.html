@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Capitulo 3</title>
+</head>
+<body>
+	<div id="header">
+		<div id="header_inner">
+			<img src="img/perritos.jpg" height=100 weight=200
+				alt="Servicio de Mascotas" />
+			<div id="slogan">Perros Felices son Buenos Perros</div>
+		</div>
+	</div>
+	<article>
+		<header>
+			<h1>Aprendiendo HTML5</h1>
+			<h2>Los Nuevos Elementos</h2>
+		</header>
+		<p>Nuevas etiquetas de HTML5 para hacer una página Web y
+			desarrollar una aplicación Más fácilmente.</p>
+		<footer>
+			<p>
+				Publicado:
+				<time datetime="2012-09-03">Septiembre del 2012 </time>
+			</p>
+		</footer>
+	</article>
+	<section>
+		<h1>Eight Count</h1>
+		<p>Los instructores de baile hip-hop a menudo enseñan movimientos
+			que tienen ocho tiempos por moviemiento.</p>
+	</section>
+	<section>
+		<hgroup>
+			<h1>Los movimientos de los bailarines de Hip-Hop</h1>
+			<h3>Método de contar ocho</h3>
+		</hgroup>
+		<article>
+			<p>Los instructores de baile hip-hop a menudo enseñan movimientos
+				que tienen ocho tiempos por movimiento.</p>
+		</article>
+	</section>
+	<article>
+		<header>
+			<h1>Aprendiendo HTML5</h1>
+			<h2>Los Nuevos Elementos</h2>
+		</header>
+		<p>Nuevas etiquetas de HTML5 para hacer páginas Web y Desarrollar
+			aplicaciones más fácilmente Una de las nuevas características más
+			útiles de HTML5 es el uso de marcado semántico.</p>
+		<aside>
+			<h4>
+				<b> marcado semántico </b>
+			</h4>
+			<p>da mejor significado, o definición, a las etiquetas para que
+				tengan más sentido para las personas, y navegadores web.</p>
+		</aside>
+		<p>No todas las etiquetas de HTML tienen que ser remplazadas o
+			actualizadasse han creado para hacer más fácil lo que es la creación
+			de páginas Web.</p>
+		<footer>
+			<p>
+				Publicado:
+				<time datetime="2018-12-
+03">Septiembre 3, 2018</time>
+			</p>
+		</footer>
+	</article>
+	<table border="1">
+		<tr>
+			<!--fila 1-->
+			<th>TABLA ANIGUA -Trimestre</th>
+			<!--Primera fila en la primer columna-->
+			<th>Total Ventas</th>
+			<!--primera fila, segunda columna-->
+		</tr>
+		<tr>
+			<!--segunda fila-->
+			<td>T1</td>
+			<td>$4,349</td>
+		</tr>
+		<tr>
+			<!--tercera fila-->
+			<td>T2</td>
+			<td>$2,984</td>
+		</tr>
+		<tr>
+			<!--cuarta fila-->
+			<td>T3</td>
+			<td>$3,570</td>
+		</tr>
+		<tr>
+			<!--quinta fila-->
+			<td>T4</td>
+			<td>$7,215</td>
+		</tr>
+	</table>
+	<table>
+		<caption>TABLA NUEVA -Ventas por el Empleado ID 2387</caption>
+		<colgroup span="2" style="background-color: #EEE8AA;">
+		</colgroup>
+		<colgroup style="background-color: #00FA9A;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col">Trimestres</th>
+				<th scope="col">Total Ventas</th>
+				<th scope="col">Objetivo Conseguido?</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th scope="col">Total</th>
+				<th scope="col">$18,118</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			<tr>
+				<td>T1</td>
+				<td>$4,349</td>
+				<td>Sí</td>
+			</tr>
+			<tr>
+				<td>T2</td>
+				<td>$2,984</td>
+				<td>No</td>
+			</tr>
+			<tr>
+				<td>T3</td>
+				<td>$3,570</td>
+				<td>Sí</td>
+			</tr>
+			<tr>
+				<td>T4</td>
+				<td>$7,215</td>
+				<td>Sí</td>
+			</tr>
+		</tbody>
+		<p>Marcas de Coches más caros:</p>
+		<ol>
+			<li>Ferrari</li>
+			<li>Lamborghini</li>
+			<li>Bugatti</li>
+		</ol>
+		<p>Tipos de Ferrari:</p>
+		<ul>
+			<li>Ferrari 250</li> 
+			<li>Ferrari 250 GT Berlinetta</li>
+			<li>Ferrari 250 GTO</li>
+		</ul>
+		<p>Sabores de helados:</p>
+		<ul type="square">
+			<li>Fresa</li>
+			<li>Vainilla</li>
+			<li>Chocolate</li>
+		</ul>
+		<p>Curiosidades de los Tipos de Ferrari 250:</p>
+		<dl>
+			<dt>Ferrari 250 GT Berlinetta</dt>
+			<dd>De este tipo de coche, solo se han fabricado 350 en el
+				mundo.</dd>
+			<dt>Ferrari 250 GTO</dt>
+			<dd>Se ha llegado a vender por 60 millones de euros en una
+				subasta, el de 1963.</dd>
+		</dl>
+		<div id="contact-form"
+			style="font-family: 'Arial Narrow', 'Nimbus Sans L', sans-serif;">
+			<form id="contact" method="post" action="">
+				<fieldset>
+				<label for="empID">EmpleadoId</label>
+				<input type="text" id="empID" name="EmpleadoID"
+required pattern="[A-Z]{2}[0-9]{4}"
+title=" La identificación del empleado es seguida de dos letras mayúsculas por cuatro dígitos ">
+					<label for="name">Nombre</label> <input type="text" name=" Nombre " />
+				</fieldset>
+				<fieldset>
+					<label for="email">Correo electrónico</label> <input type="email"
+						name=" Correo electrónico " />
+				</fieldset>
+				
+					
+			</form>
+		</div>
+		<!--fin del formulario-->
+</body>
+</html>
