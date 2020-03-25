@@ -20,7 +20,6 @@ import com.front.pTipoAnt.common.exceptions.ServicioException;
 import com.front.pTipoAnt.common.exceptions.TipoException;
 import com.front.pTipoAnt.data.Departamento;
 
-
 /**
  * Servlet implementation class DepartamentoController
  */
@@ -28,7 +27,7 @@ import com.front.pTipoAnt.data.Departamento;
 public class DepartamentoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	IServicio<Long,Departamento> servicio;
+	IServicio<Long, Departamento> servicio;
 
 	private static final Logger log = Logger.getLogger(DepartamentoController.class);
 
@@ -42,192 +41,155 @@ public class DepartamentoController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		log.debug("doGet");
-		
-		String jsp="/departamento.jsp";
 
-		String accion= request.getParameter("accion");
-		
-		if(accion!=null) accion = accion.trim();
-		switch(accion) {
+		String jsp = "/departamento.jsp";
 
-		case Constantes.FORMULARIO_MODIFICAR:{
-			prepararFormModificacion(request,response);
-		}
-		case Constantes.FORMULARIO_CREAR:
-			break;
+		String accion = request.getParameter("accion");
+		String id = request.getParameter("id");
+
+		log.debug("id" + id);
+		log.debug("accion" + accion);
+
+		if (accion != null)
+			accion = accion.trim();
+		switch (accion) {
+
+		case Constantes.FORMULARIO_MODIFICAR: 
+			prepararFormModificacion(request, response);
+		
 		case Constantes.VISUALIZAR:
-			visualizar(request,response);	
-			break;	
-		case Constantes.CREAR:
-			crear(request,response);
-			jsp="/";
+			visualizar(request, response);
 			break;
 		case Constantes.MODIFICAR:
-			modificar(request,response);
+			modificar(request, response);
 			break;
-		case Constantes.ELIMINAR:
-			eliminar(request,response);	
-			jsp="/";
-			break;
-		
-
 		}
 		request.setAttribute("tipos", Tipo.values());
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(jsp);
-		dispatcher.forward(request,response);
+		dispatcher.forward(request, response);
 	}
 
 	private void prepararFormModificacion(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("prepararFormModificacion");
 		try {
-			if(request.getParameter("id")==null && "".equals(request.getParameter("id").trim())) {
+			if (request.getParameter("id") == null && "".equals(request.getParameter("id").trim())) {
 				Long id = Long.valueOf(request.getParameter("id"));
 				Departamento departamento = this.servicio.findOne(id);
 				request.setAttribute("elemento", departamento);
-			}else {
+			} else {
 				throw new Exception();
 			}
 		} catch (NumberFormatException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (ServicioException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (Exception e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		}
 
-
 	}
-	
+
 	private void visualizar(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("visualizar");
 		try {
 			Departamento departamento = new Departamento();
-			if(request.getParameter("id")!=null && !"".equals(request.getParameter("id").trim())) {
-				Long id = Long.valueOf(request.getParameter("id"));	
+			if (request.getParameter("id") != null && !"".equals(request.getParameter("id").trim())) {
+				Long id = Long.valueOf(request.getParameter("id"));
 				departamento = this.servicio.findOne(id);
 				request.setAttribute("elemento", departamento);
-			}else {
+			} else {
 				throw new Exception();
 			}
 		} catch (NumberFormatException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (ServicioException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (Exception e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		}
 
 	}
+
 	private void modificar(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("modificar");
 		try {
 			Departamento departamento = new Departamento();
-			if((request.getParameter("id")!=null && !"".equals(request.getParameter("id").trim())) &&
-					(request.getParameter("nombre")!=null && !"".equals(request.getParameter("nombre").trim())) &&					
-					(request.getParameter("tipo")!=null && !"".equals(request.getParameter("tipo").trim()))) {
-				Long id = Long.valueOf(request.getParameter("id"));	
+			if ((request.getParameter("id") != null && !"".equals(request.getParameter("id").trim()))
+					&& (request.getParameter("nombre") != null && !"".equals(request.getParameter("nombre").trim()))) {
+				Long id = Long.valueOf(request.getParameter("id"));
 				departamento.setId(id);
 				departamento = this.servicio.findOne(id);
 				departamento.setNombre(request.getParameter("nombre"));
 				this.servicio.update(departamento);
 				request.setAttribute("elemento", departamento);
-			}else {
+			} else {
 				throw new Exception();
 			}
 		} catch (NumberFormatException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (ServicioException e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		} catch (Exception e) {
-			gestionExcepcion(e,request);
+			gestionExcepcion(e, request);
 		}
 
 	}
-	private void crear(HttpServletRequest request, HttpServletResponse response) {
-		log.debug("crear");
-		try {
-			Departamento departamento = new Departamento();
-			if((request.getParameter("nombre")!=null && !"".equals(request.getParameter("nombre").trim())) &&					
-					(request.getParameter("tipo")!=null && !"".equals(request.getParameter("tipo").trim()))) {
-				departamento.setNombre(request.getParameter("nombre"));
-				this.servicio.create(departamento);
-			}else {
-				throw new Exception();
-			}
-		} catch (NumberFormatException e) {
-			gestionExcepcion(e,request);
-		} catch (ServicioException e) {
-			gestionExcepcion(e,request);
-		} catch (Exception e) {
-			gestionExcepcion(e,request);
-		}
+	
 
-	}
-
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
-		log.debug("eliminar");
-		try {
-			if(request.getParameter("id")!=null && !"".equals(request.getParameter("id").trim())) {
-				Long id = Long.valueOf(request.getParameter("id"));	
-				this.servicio.delete(id);
-				
-			}else {
-				throw new Exception();
-			}
-		} catch (NumberFormatException e) {
-			gestionExcepcion(e,request);
-		} catch (ServicioException e) {
-			gestionExcepcion(e,request);
-		} catch (Exception e) {
-			gestionExcepcion(e,request);
-		}
-
-	}
+	
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		log.debug("doPost");
-		doGet(request,response);
+		doGet(request, response);
 	}
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		log.debug("doPut");
-		doGet(request,response);
+		doGet(request, response);
 	}
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		log.debug("doDelete");
-		doGet(request,response);
+		doGet(request, response);
 	}
-
-
 
 	private void gestionExcepcion(Exception e, HttpServletRequest request) {
 		log.debug("gestionExcepcion");
 
 		ResourceBundle rb = ResourceBundle.getBundle("error");
-		String mensajeError="";
-		if(e instanceof ServicioException) {
-			ServicioException se = (ServicioException)e;
-			log.info("Tipo Excepcion de Servicio:"+se.getTipoExcepcion().toString());
+		String mensajeError = "";
+		if (e instanceof ServicioException) {
+			ServicioException se = (ServicioException) e;
+			log.info("Tipo Excepcion de Servicio:" + se.getTipoExcepcion().toString());
 			mensajeError = rb.getString(se.getTipoExcepcion().toString());
 
-		}else {
-			log.info("Tipo Excepcion General:"+TipoException.EXCEPCION_GENERAL.toString());
+		} else {
+			log.info("Tipo Excepcion General:" + TipoException.EXCEPCION_GENERAL.toString());
 			mensajeError = rb.getString(TipoException.EXCEPCION_GENERAL.toString());
 		}
-		log.info("Mensaje Error:"+mensajeError);
+		log.info("Mensaje Error:" + mensajeError);
 		request.setAttribute("error", mensajeError);
 	}
 

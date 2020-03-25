@@ -80,8 +80,9 @@ public class DepartamentoDAO implements IDAO<Long, Departamento> {
 		Departamento departamento=null;
 
 
-		String sql ="SELECT DEPARTMENT_ID,DEPARTMENT_NAME,LOCATION_ID,MANAGER_ID FROM DEPARTMENTS WHERE ID=DEPARTMENT_ID";
+		String sql = "SELECT DEPARTMENT_ID, DEPARTMENT_NAME, MANAGER_ID, LOCATION_ID FROM DEPARTMENTS WHERE DEPARTMENT_ID =?";
 
+		log.info(sql);
 		try {
 			con = driverManager.getConexion();
 			pstm = con.prepareStatement(sql);

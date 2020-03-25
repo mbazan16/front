@@ -10,16 +10,11 @@ function verElemento(id){
 	
 	document.getElementById("formDepartamento").submit();
 }
-function irACrear(){
-	document.getElementById("formDepartamento").accion.value = "F_C";
-	
-	document.getElementById("formDepartamento").submit();
-}
 </script>
 <style>
 
 	label{
-		color: #0040ff;
+		color: #0040aa;
 	}
 </style>
 <head>
@@ -37,11 +32,11 @@ Departamentoes
 <ul>
 <c:forEach items="${listado}" var="elemento">
 <li>${elemento.nombre} 
-<img src="./img/lupa.png" width=25 height=25 onClick="javascript:verElemento(${elemento.id})">
+<img src="./static/img/lupa.png" width=25 height=25 onClick="javascript:verElemento(${elemento.id})">
 </li>
 </c:forEach>
 </ul>
-<a href="javascript:irACrear()">Crear Nuevo</a><br>
+
 
 <c:if test="${error!=null}">
 <div style="color:red">
