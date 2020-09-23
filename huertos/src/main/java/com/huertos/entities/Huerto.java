@@ -19,6 +19,7 @@ public class Huerto implements Serializable {
 	private long id;
 
 	private String nombre;
+	
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
@@ -30,7 +31,17 @@ public class Huerto implements Serializable {
 	private List<Maceta> macetas;
 
 	public Huerto() {
+	}	
+	
+
+	public Huerto(long id, String nombre, Usuario usuario) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.usuario = usuario;
 	}
+
+
 
 	public long getId() {
 		return this.id;

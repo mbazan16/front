@@ -30,6 +30,7 @@ public class Maceta implements Serializable {
 	private long id;
 
 	@Enumerated
+	@Column(name="IDTIPOMACETA")
 	private TipoMaceta tipoMaceta;
 
 	@Column(name="MCACOMPLETA")

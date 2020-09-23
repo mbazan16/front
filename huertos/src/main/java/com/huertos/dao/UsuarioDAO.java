@@ -12,17 +12,17 @@ import org.apache.log4j.Logger;
 
 import com.huertos.common.exceptions.DAOException;
 import com.huertos.common.exceptions.MensajesExceptions;
-import com.huertos.dao.interfaces.IDAOHuerto;
-import com.huertos.entities.Huerto;
+import com.huertos.dao.interfaces.IDAOUsuario;
+import com.huertos.entities.Usuario;
 
 /**
- * Gestion del objeto Huerto con la bbdd
+ * Gestion del objeto Usuario con la bbdd
  * @author formacion
  *
  */
-public class HuertoDAO implements IDAOHuerto{
+public class UsuarioDAO implements IDAOUsuario{
 
-	private final static Logger log = Logger.getLogger(HuertoDAO.class);
+	private final static Logger log = Logger.getLogger(UsuarioDAO.class);
 
 	EntityManagerFactory emf;
 
@@ -30,17 +30,17 @@ public class HuertoDAO implements IDAOHuerto{
 
 
 	/**
-	 * Método para encontrar un Huerto por su id 
-	 * @param id Identificador del Huerto
-	 * @return  objeto Huerto
+	 * Método para encontrar un Usuario por su id 
+	 * @param id Identificador del Usuario
+	 * @return  objeto Usuario
 	 * @throws DAOException
 	 */
 	@Override
-	public Huerto findOne(Long id) throws DAOException {
+	public Usuario findOne(Long id) throws DAOException {
 		log.info("Method:[findOne]");
 		log.debug("Parmetros:[Long id:" + id+"]");
 
-		Huerto element = null;
+		Usuario element = null;
 
 		try {
 			init();
@@ -58,19 +58,19 @@ public class HuertoDAO implements IDAOHuerto{
 	}
 
 	/**
-	 * Método para encontrar tododos los Huertos de la base de datos
-	 * @return Una Lista de Huertos
+	 * Método para encontrar tododos los Usuarios de la base de datos
+	 * @return Una Lista de Usuarios
 	 * @throws DAOException
 	 */
 	@Override
-	public List<Huerto> findAll() throws DAOException {
+	public List<Usuario> findAll() throws DAOException {
 		log.info("Method:[findAll]");
 
-		List<Huerto> elements = new ArrayList<Huerto>();
+		List<Usuario> elements = new ArrayList<Usuario>();
 
 		try {
 			init();
-			elements = manager.createNamedQuery("Huerto.findAll", Huerto.class).getResultList();
+			elements = manager.createNamedQuery("Usuario.findAll", Usuario.class).getResultList();
 
 		} catch (Exception e) {
 			log.error("Error", e);
@@ -82,14 +82,14 @@ public class HuertoDAO implements IDAOHuerto{
 	
 	
 	/**
-	 * Método para crear un Huerto de la base de datos
-	 * @param element objeto de tipo Huerto
+	 * Método para crear un Usuario de la base de datos
+	 * @param element objeto de tipo Usuario
 	 * @throws DAOException
 	 */
 	@Override
-	public void create(Huerto element) throws DAOException {
+	public void create(Usuario element) throws DAOException {
 		log.info("Method:[crear]");
-		log.debug("Parmetros:[Huerto element:" + element+"]");
+		log.debug("Parmetros:[Usuario element:" + element+"]");
 
 		try {
 			init();
@@ -100,7 +100,7 @@ public class HuertoDAO implements IDAOHuerto{
 				manager.getTransaction().begin();
 				manager.persist(element);
 				manager.getTransaction().commit();
-				log.debug("[crear]Commit - Creamos huerto");
+				log.debug("[crear]Commit - Creamos usuario");
 			} catch (Exception e) {
 				log.error("Error", e);
 				manager.getTransaction().rollback();
@@ -119,26 +119,26 @@ public class HuertoDAO implements IDAOHuerto{
 
 
 	/**
-	 * Método para modificar un Huerto de la base de datos
-	 * @param element objeto de tipo Huerto
+	 * Método para modificar un Usuario de la base de datos
+	 * @param element objeto de tipo Usuario
 	 * @throws DAOException
 	 */
 	
 	@Override
-	public void update(Huerto element) throws DAOException {
+	public void update(Usuario element) throws DAOException {
 		log.info("Method:[update]");
-		log.debug("Parmetros:[Huerto element:" + element+"]");
+		log.debug("Parmetros:[Usuario element:" + element+"]");
 		try {
 			init();
-			Huerto huertoBBDD = validarModificar(element);
+			Usuario usuarioBBDD = validarModificar(element);
 			
 			try {
 				EntityTransaction et =manager.getTransaction();
 				et.begin();
 				log.debug("[modificar]Iniciamos transacción");
-				huertoBBDD.setNombre(element.getNombre());				
+				usuarioBBDD.setNombre(element.getNombre());				
 				manager.getTransaction().commit();
-				log.debug("[modificar]Commit - Modificamos huerto");
+				log.debug("[modificar]Commit - Modificamos usuario");
 			} catch (Exception e) {
 				log.error("Error", e);
 				manager.getTransaction().rollback();				
@@ -158,8 +158,8 @@ public class HuertoDAO implements IDAOHuerto{
 
 
 	/**
-	 * Método para eliminar un Huerto de la base de datos
-	 * @param id Identificador de Huerto
+	 * Método para eliminar un Usuario de la base de datos
+	 * @param id Identificador de Usuario
 	 * @throws DAOException
 	 */
 	@Override
@@ -169,14 +169,14 @@ public class HuertoDAO implements IDAOHuerto{
 
 		try {
 			init();
-			Huerto element = validarEliminar(id);
+			Usuario element = validarEliminar(id);
 
 			try {
 				log.debug("[eliminar]Iniciamos transacción");
 				manager.getTransaction().begin();
 				manager.remove(element);
 				manager.getTransaction().commit();
-				log.debug("[eliminar]Commit - Eliminamos huerto");
+				log.debug("[eliminar]Commit - Eliminamos usuario");
 			} catch (Exception e) {
 				log.error("Error", e);
 				manager.getTransaction().rollback();
@@ -192,59 +192,30 @@ public class HuertoDAO implements IDAOHuerto{
 		}
 
 	}
-	
-	@Override
-	public Long getLastId() throws DAOException {
-		String query1  = "SELECT Max(h.id) FROM Huerto h";
-		Long proximoId = 0L;
-		try {
-			init();
-			proximoId = manager.createQuery(query1,Long.class)
-								.getSingleResult();
-			if(proximoId==null)proximoId=1L;
-		} catch (Exception e) {
-			log.error("Error", e);
-			throw new DAOException(e);
-		}
-		return proximoId;
-	}
-	
-	@Override
-	public int getNumMacetas(Long id) throws DAOException {
-		String query1  = "SELECT COUNT(m) FROM Maceta m WHERE m.huerto.id=:id";
-		String query2  = "SELECT SIZE(h.macetas) FROM Huerto h WHERE h.id=:id";
-		Integer numMacetas = 0;
-		try {
-			init();
-			numMacetas = manager.createQuery(query1,Integer.class)
-								.setParameter("id", id)
-								.getSingleResult();
 
-		} catch (Exception e) {
-			log.error("Error", e);
-			throw new DAOException(e);
-		}
-		return numMacetas;
-	}
+
 
 	@Override
-	public int getNumPlantas(Long id) throws DAOException {
-		String query1  = "SELECT COUNT(p) FROM Planta p WHERE p.maceta.huerto.id=:id";
-		Integer numPlantas = 0;
+	public Usuario findUsuarioByUsername(String username) throws DAOException {
+		log.info("Method:[findUsuarioByUsername]");
+		log.debug("Parmetros:[String username:" + username+"]");
+
+		Usuario element = null;
+		String query  = "SELECT u FROM Usuario u WHERE u.username=:username";
+		
 		try {
 			init();
-			numPlantas = manager.createQuery(query1,Integer.class)
-								.setParameter("id", id)
+			element = manager.createQuery(query,Usuario.class)
+								.setParameter("username", username)
 								.getSingleResult();
+			return element;
 
-		} catch (Exception e) {
+		}catch (Exception e) {
 			log.error("Error", e);
 			throw new DAOException(e);
+
 		}
-		return numPlantas;
 	}
-
-
 
 	/**
 	 * Método de inicialización de la clase
@@ -253,65 +224,65 @@ public class HuertoDAO implements IDAOHuerto{
 	private void init() {
 		log.info("Method:[private init]");
 
-		if(emf==null) emf = Persistence.createEntityManagerFactory("huertos");
+		if(emf==null) emf = Persistence.createEntityManagerFactory("usuarios");
 		log.debug("[emf]:"+emf);
 		if(manager== null) manager =  emf.createEntityManager();
 		log.debug("[manager]:"+manager);
 	}
 
 	/**
-	 * Validaciones para la acción crear Huerto.
-	 * Se comprueba que no existe el huerto
+	 * Validaciones para la acción crear Usuario.
+	 * Se comprueba que no existe el usuario
 	 * y que la direccion esta registrada en la BBDD
 	 * Si exite el manager, también se comprueba su existencia
 	 * 
 	 * @param element
 	 * @throws DAOException
 	 */
-	private void validarCrear(Huerto element)  throws DAOException {
+	private void validarCrear(Usuario element)  throws DAOException {
 		log.info("Method:[private validarCrear]");
-		log.debug("Parmetros:[Huerto element:" + element+"]");
+		log.debug("Parmetros:[Usuario element:" + element+"]");
 
 		
 
 	}
 	/**
-	 * Validaciones para la acción modificar Huerto.
-	 * Se comprueba que existe el huerto,
-	 * que el huerto a modificar no es igualque el existente
+	 * Validaciones para la acción modificar Usuario.
+	 * Se comprueba que existe el usuario,
+	 * que el usuario a modificar no es igualque el existente
 	 * y que la direccion esta registrada en la BBDD
 	 * Si exite el manager, también se comprueba su existencia
 	 * 
 	 * @param element
 	 * @throws DAOException
 	 */
-	private Huerto validarModificar(Huerto element)  throws DAOException{
+	private Usuario validarModificar(Usuario element)  throws DAOException{
 		log.info("Method:[private validarModificar]");
-		log.debug("Parmetros:[Huerto element:" + element+"]");
+		log.debug("Parmetros:[Usuario element:" + element+"]");
 
-		Huerto huertoBBDD = findBBDD(element.getId());		
-		if(huertoBBDD == null) throw new DAOException(MensajesExceptions.NO_EXISTE_HUERTO);
-		return huertoBBDD;
+		Usuario usuarioBBDD = findBBDD(element.getId());		
+		if(usuarioBBDD == null) throw new DAOException(MensajesExceptions.NO_EXISTE_USUARIO);
+		return usuarioBBDD;
 
 	}
 
 
 	/**
-	 * Validaciones para la acción modificar Huerto.
-	 * Se comprueba que existe el huerto
+	 * Validaciones para la acción modificar Usuario.
+	 * Se comprueba que existe el usuario
 	 * 
 	 * @param id
 	 * @return
 	 * @throws DAOException
 	 */
-	private Huerto validarEliminar(Long id)  throws DAOException{
+	private Usuario validarEliminar(Long id)  throws DAOException{
 		log.info("Method:[private validarEliminar]");
 		log.debug("Parmetros:[Long id:" + id+"]");
 
-		Huerto huertoBBDD = findBBDD(id);		
-		if(huertoBBDD == null) throw new DAOException(MensajesExceptions.NO_EXISTE_HUERTO);
+		Usuario usuarioBBDD = findBBDD(id);		
+		if(usuarioBBDD == null) throw new DAOException(MensajesExceptions.NO_EXISTE_USUARIO);
 
-		return huertoBBDD;
+		return usuarioBBDD;
 	}
 	
 
@@ -320,14 +291,14 @@ public class HuertoDAO implements IDAOHuerto{
 	 * @param idDireccion
 	 * @throws DAOException
 	 */
-	private Huerto findBBDD(Long id) throws DAOException {
+	private Usuario findBBDD(Long id) throws DAOException {
 		log.info("Method:[private findBBDD ]");
 		log.debug("Parmetros:[Long id:" + id+"]");
 
-		Huerto element = null;
+		Usuario element = null;
 
 		try {
-			element = manager.find(Huerto.class, id);
+			element = manager.find(Usuario.class, id);
 			log.debug("[private findBBDD ][element]:"+element);
 
 		} catch (Exception e) {
@@ -338,11 +309,5 @@ public class HuertoDAO implements IDAOHuerto{
 
 		return element;
 	}
-
-	
-
-	
-
-	
 
 }

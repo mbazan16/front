@@ -7,6 +7,7 @@ public enum TipoMaceta {
 	private int id;
 	private String descripcion;
 	private int num_plantas;
+	
 	private TipoMaceta(int id, String descripcion, int num_plantas) {
 		this.id = id;
 		this.descripcion = descripcion;
