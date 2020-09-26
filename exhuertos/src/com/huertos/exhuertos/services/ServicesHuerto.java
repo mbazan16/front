@@ -13,8 +13,10 @@ import com.huertos.exhuertos.dao.UsuarioDAO;
 import com.huertos.exhuertos.dao.interfaces.IDAOHuerto;
 import com.huertos.exhuertos.dao.interfaces.IDAOMaceta;
 import com.huertos.exhuertos.dao.interfaces.IDAOUsuario;
+import com.huertos.exhuertos.data.TipoMaceta;
 import com.huertos.exhuertos.dto.DatosHuertos;
 import com.huertos.exhuertos.entities.Huerto;
+import com.huertos.exhuertos.entities.Maceta;
 import com.huertos.exhuertos.entities.Usuario;
 import com.huertos.exhuertos.services.interfaces.IHuerto;
 
@@ -117,7 +119,7 @@ public class ServicesHuerto implements IHuerto {
 
 
 	@Override
-	public void crearHuerto(String nombre, String username) throws ServiceException {
+	public void crear(String nombre, String username) throws ServiceException {
 		log.debug("crearHuerto");
 		try {
 			
@@ -139,7 +141,7 @@ public class ServicesHuerto implements IHuerto {
 	}
 
 	@Override
-	public void modicarHuerto(Long id, String nombre) throws ServiceException {
+	public void modificar(Long id, String nombre) throws ServiceException {
 		log.debug("modicarHuerto");
 		try {
 			
@@ -157,7 +159,7 @@ public class ServicesHuerto implements IHuerto {
 	}
 
 	@Override
-	public void eliminarHuerto(Long id) throws ServiceException {
+	public void eliminar(Long id) throws ServiceException {
 		log.debug("eliminarHuerto");
 		try {
 			
@@ -169,6 +171,58 @@ public class ServicesHuerto implements IHuerto {
 			throw new ServiceException(e);
 		}
 
+	}
+	
+	@Override
+	public List<Maceta> getfindAllByHuerto(Long idHuerto) throws ServiceException {
+		log.debug("getfindAllByHuerto");
+		try {
+			
+			return macetaDAO.findAllByIdHuerto(idHuerto);
+
+		} catch (DAOException daoe) {
+			throw new ServiceException(daoe);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+
+	}
+
+	@Override
+	public void crearMaceta(Long idHuerto,TipoMaceta tipoMaceta) throws ServiceException {
+		log.debug("crearMaceta");
+		try {
+			
+			Maceta maceta = new Maceta();
+			maceta.setId(macetaDAO.getLastId());
+			maceta.setTipoMaceta(tipoMaceta);
+			
+			Huerto huerto= huertoDAO.findOne(idHuerto);			
+			maceta.setHuerto(huerto);
+			
+			macetaDAO.create(maceta);
+			
+		} catch (DAOException daoe) {
+			throw new ServiceException(daoe);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+
+	}
+
+	@Override
+	public void eliminarMaceta(Long id) throws ServiceException {
+		log.debug("eliminarMaceta");
+		try {
+			
+			macetaDAO.delete(id);
+
+		} catch (DAOException daoe) {
+			throw new ServiceException(daoe);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+		
 	}
 
 	

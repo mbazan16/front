@@ -2,7 +2,7 @@ package com.huertos.exhuertos.data;
 
 public enum TipoMaceta {
 	
-	SIMPLE(1,"Tipo Simple",1), DOBLE(2,"Tipo Doble",2),TRIPLE(3,"Tipo Triple",3);
+	SIMPLE(0,"Tipo Simple",1), DOBLE(1,"Tipo Doble",2),TRIPLE(2,"Tipo Triple",3);
 	
 	private int id;
 	private String descripcion;

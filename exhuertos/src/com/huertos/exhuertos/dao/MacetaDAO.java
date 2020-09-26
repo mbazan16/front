@@ -85,6 +85,24 @@ public class MacetaDAO implements IDAOMaceta{
 	}
 	
 	
+	@Override
+	public List<Maceta> findAllByIdHuerto(Long idHuerto) throws DAOException{
+		String query1  = "SELECT m FROM Maceta m where m.huerto.id=:idHuerto";
+		List<Maceta> macetas = new ArrayList<Maceta>();
+		try {
+			init();
+			macetas = manager.createQuery(query1,Maceta.class)
+							.setParameter("idHuerto", idHuerto)
+							.getResultList();
+		} catch (Exception e) {
+			log.error("Error", e);
+			throw new DAOException(e);
+		}finally {
+			destroy();
+		}
+		return macetas;
+	}
+
 	/**
 	 * Método para crear un Maceta de la base de datos
 	 * @param element objeto de tipo Maceta

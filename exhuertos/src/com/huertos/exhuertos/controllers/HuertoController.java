@@ -1,6 +1,8 @@
 package com.huertos.exhuertos.controllers;
 
+
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,8 +16,11 @@ import org.apache.log4j.Logger;
 import com.huertos.exhuertos.common.exceptions.ServiceException;
 import com.huertos.exhuertos.data.TipoMaceta;
 import com.huertos.exhuertos.entities.Huerto;
+import com.huertos.exhuertos.entities.Maceta;
 import com.huertos.exhuertos.services.ServicesHuerto;
 import com.huertos.exhuertos.services.interfaces.IHuerto;
+
+import static com.huertos.exhuertos.common.Constantes.*;
 
 @WebServlet("/huerto")
 public class HuertoController extends HttpServlet {
@@ -40,42 +45,32 @@ public class HuertoController extends HttpServlet {
 
 		try {
 			String accion = request.getParameter("accion");
-			String id = request.getParameter("id");
+			String id = request.getParameter("id");			
 
+			if (accion == null)	accion = ACCION_VER;
+			accion = accion.trim();
+			
 			log.debug("id:" + id);
 			log.debug("accion:" + accion);
-
-			if (accion == null)
-				accion = "VER";
-			if (accion != null)
-				accion = accion.trim();
-			log.debug("id final:" + id);
-			log.debug("accion final:" + accion);
-			recarga = comprobarRecarga(request, recarga, accion, id);
-
-			if (!recarga) {
-				log.debug("srecarga:"+request.getSession().getAttribute("RECARGA"));
+			
+			if (!comprobarRecarga(request, recarga, accion, id)) {
+				
 				switch (accion) {
 
-				case "MODIFICAR":
-					modificar(request, response, Long.valueOf(id));
-				case "IR_MODIFICAR":
-				case "VER":
-					visualizar(request, response, Long.valueOf(id));
+				case ACCION_MODIFICAR:
+					modificar(request, response, Long.valueOf(id));					
 					break;
-				case "CREAR":
-					forward = "/huertos";
-					crear(request, response);
+				case ACCION_CREAR:
+					crearMaceta(request, response,Long.valueOf(id));					
 					break;
-				case "ELIMINAR":
-					forward = "/huertos";
-					eliminar(request, response, Long.valueOf(id));
-					break;
+				case ACCION_ELIMINAR:
+					eliminarMaceta(request, response);
 				}
-				log.debug("session-METO RECARGA:"+request.getSession());
+				log.debug("session-codigoRecarga:"+request.getSession());
 				request.getSession().setAttribute("RECARGA", accion + id);
-			} else {
-				forward = "/huertos";
+				
+				visualizar(request, response, Long.valueOf(id));
+				
 			}
 
 		} catch (ServiceException e) {
@@ -110,11 +105,11 @@ public class HuertoController extends HttpServlet {
 
 	private boolean comprobarRecarga(HttpServletRequest request, boolean recarga, String accion, String id) {
 		log.debug("comprobarRecarga");
-		Object srecarga = request.getSession().getAttribute("RECARGA");
+		Object srecarga = request.getSession().getAttribute(ATRIBUTO_SESSION_RECARGA);
 		log.debug("session:"+request.getSession());
 		log.debug("srecarga:"+srecarga);
 		
-		if (srecarga != null && ((String) srecarga).equals(accion+id))
+		if (!accion.equalsIgnoreCase(ACCION_VER) && srecarga != null && ((String) srecarga).equals(accion+id))
 			recarga = true;
 		return recarga;
 	}
@@ -123,9 +118,10 @@ public class HuertoController extends HttpServlet {
 		log.debug("visualizar");
 
 		Huerto huerto = this.service.getFindById(id);
-
+		List<Maceta> macetas = this.service.getfindAllByHuerto(id);
 		request.setAttribute("titulo", "Huerto");
 		request.setAttribute("elemento", huerto);
+		request.setAttribute("macetas", macetas);
 		request.setAttribute("nombreElementos", "Macetas");
 		request.setAttribute("tiposMacetas", TipoMaceta.getValues());
 
@@ -141,26 +137,33 @@ public class HuertoController extends HttpServlet {
 
 		String nombre = request.getParameter("nombre");
 
-		this.service.modicarHuerto(id, nombre);
+		this.service.modificar(id, nombre);
 
 	}
 
-	private void crear(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+
+	private void crearMaceta(HttpServletRequest request, HttpServletResponse response, Long idHuerto) throws ServiceException {
 		log.debug("crear");
 
-		String nombre = request.getParameter("nombre");
-		String username = request.getParameter("username");
-
-		log.debug("nombre:" + nombre);
-		log.debug("username:" + request.getParameter("username"));
-		this.service.crearHuerto(nombre, username);
+		String idtipoMaceta = request.getParameter("tipoMaceta");
+		TipoMaceta tipoMaceta =null;
+		for(TipoMaceta element:TipoMaceta.values()) {
+			if(element.getId()==Integer.valueOf(idtipoMaceta))
+				tipoMaceta=element;
+		}		
+		
+		log.debug("TipoMaceta:" + tipoMaceta);
+		log.debug("idHuerto:" +idHuerto);
+		
+		this.service.crearMaceta(idHuerto,tipoMaceta);
 
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response, Long id) throws ServiceException {
+	private void eliminarMaceta(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
 		log.debug("eliminar");
+		Long idMaceta = Long.valueOf(request.getParameter("idMaceta"));
 
-		this.service.eliminarHuerto(id);
+		this.service.eliminarMaceta(idMaceta);
 
 	}
 

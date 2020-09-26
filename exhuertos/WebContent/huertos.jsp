@@ -8,6 +8,7 @@
 function verElemento(id){
 	document.getElementById("formHuerto").id.value = id;
 	document.getElementById("formHuerto").accion.value = "VER"; 
+	document.getElementById("formHuerto").action = "./huerto"; 
 	
 	document.getElementById("formHuerto").submit();
 }
@@ -64,9 +65,8 @@ function eliminar(id){
 	</div>
 	<div id="panelCrearForm" class="gallery" style="display: none">
 		<h2>Nuevo Huerto</h2>
-		<form method="post" action="./huerto" id="formHuerto">
+		<form method="post" action="./huertos" id="formHuerto">
 			<input hidden="true" type="text" name="accion" value="CREAR" />
-			<input hidden="true" type="text" name="elemento" value="HUERTO" />
 			<input hidden="true" type="text" name="id" value="${proximoId}" />
 			<label for="nombre">Identificador:</label> ${proximoId} <br>
 			<label for="nombre">Nombre:</label>
@@ -78,7 +78,7 @@ function eliminar(id){
 			 <input id="username" type="text"
 				name="username" value="${elemento.nombre}" required
 				pattern="[A-Za-z]+.{5,8}"
-				title="El username tiene que estar formado por letras y de 8 caracteress" /><br>
+				title="El username tiene que estar formado por letras y de 5 a 8 caracteress" /><br>
 				<input type="submit" value="Crear"> <input type="button"
 				value="Volver" onClick="javascript:visualizar()">
 		</form>

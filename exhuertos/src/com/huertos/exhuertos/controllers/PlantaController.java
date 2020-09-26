@@ -1,13 +1,10 @@
 package com.huertos.exhuertos.controllers;
 
-import static com.huertos.exhuertos.common.Constantes.ACCION_CREAR;
-import static com.huertos.exhuertos.common.Constantes.ACCION_ELIMINAR;
 import static com.huertos.exhuertos.common.Constantes.ACCION_MODIFICAR;
 import static com.huertos.exhuertos.common.Constantes.ACCION_VER;
 import static com.huertos.exhuertos.common.Constantes.ATRIBUTO_SESSION_RECARGA;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,23 +16,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.huertos.exhuertos.common.exceptions.ServiceException;
-import com.huertos.exhuertos.data.TipoMaceta;
-import com.huertos.exhuertos.entities.Maceta;
 import com.huertos.exhuertos.entities.Planta;
-import com.huertos.exhuertos.services.ServicesMaceta;
-import com.huertos.exhuertos.services.interfaces.IMaceta;
+import com.huertos.exhuertos.services.ServicesPlanta;
+import com.huertos.exhuertos.services.interfaces.IPlanta;
 
-@WebServlet("/maceta")
-public class MacetaController extends HttpServlet {
+@WebServlet("/planta")
+public class PlantaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	IMaceta service;
+	IPlanta service;
 
-	private static final Logger log = Logger.getLogger(MacetaController.class);
+	private static final Logger log = Logger.getLogger(PlantaController.class);
 
-	public MacetaController() {
+	public PlantaController() {
 		super();
-		this.service = new ServicesMaceta();
+		this.service = new ServicesPlanta();
 
 	}
 
@@ -43,7 +38,7 @@ public class MacetaController extends HttpServlet {
 			throws ServletException, IOException {
 		log.debug("doGet");
 
-		String forward = "/maceta.jsp";
+		String forward = "/planta.jsp";
 		boolean recarga = false;
 
 		try {
@@ -65,18 +60,12 @@ public class MacetaController extends HttpServlet {
 				case ACCION_MODIFICAR:
 					modificar(request, response, Long.valueOf(id));
 					break;
-				case ACCION_CREAR:
-					crearPlanta(request, response, Long.valueOf(id));
-					break;
-				case ACCION_ELIMINAR:
-					eliminarPlanta(request, response);
-					break;
 				}
 				log.debug("session-METO RECARGA:"+request.getSession());
 				request.getSession().setAttribute("RECARGA", accion + id);
 				
 				visualizar(request, response, Long.valueOf(id));
-			} 
+			}
 
 		} catch (ServiceException e) {
 			log.error("ServiceException", e);
@@ -122,52 +111,21 @@ public class MacetaController extends HttpServlet {
 	private void visualizar(HttpServletRequest request, HttpServletResponse response, Long id) throws ServiceException {
 		log.debug("visualizar");
 
-		Maceta maceta = this.service.getFindById(id);
-		List<Planta> plantas = this.service.getfindAllByMaceta(id);
-		request.setAttribute("titulo", "Maceta");
-		request.setAttribute("elemento", maceta);
-		request.setAttribute("plantas", plantas);
-		request.setAttribute("nombreElementos", "Plantas");
-		request.setAttribute("tiposMacetas", TipoMaceta.getValues());
+		Planta planta = this.service.getFindById(id);
 
-		
-		  Long proximoId = this.service.getLastIdPlanta();
-		  log.debug("Planta-proximoId:" +  proximoId); 
-		  request.setAttribute("proximoIdPlanta", proximoId);
+		request.setAttribute("titulo", "Planta");
+		request.setAttribute("elemento", planta);
+
 		 
 	}
 
 	private void modificar(HttpServletRequest request, HttpServletResponse response, Long id) throws ServiceException {
 		log.debug("modificar");
 
-		String idtipoMaceta = request.getParameter("tipoMaceta");
-		TipoMaceta tipoMaceta =null;
-		for(TipoMaceta element:TipoMaceta.values()) {
-			if(element.getId()==Integer.valueOf(idtipoMaceta))
-				tipoMaceta=element;
-		}
-
-		this.service.modificar(id, tipoMaceta);
-
-	}
-	private void crearPlanta(HttpServletRequest request, HttpServletResponse response, Long idMaceta) throws ServiceException {
-		log.debug("crear");
-
 		String nombre = request.getParameter("nombre");
-		String username = request.getParameter("username");
-
-		log.debug("nombre:" + nombre);
-		log.debug("username:" + request.getParameter("username"));
 		
-		this.service.crearPlanta(idMaceta,nombre,username);
 
-	}
-
-	private void eliminarPlanta(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-		log.debug("eliminar");
-		Long idPlanta = Long.valueOf(request.getParameter("idPlanta"));
-
-		this.service.eliminarPlanta(idPlanta);
+		this.service.modificar(id, nombre);
 
 	}
 

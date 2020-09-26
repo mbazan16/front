@@ -85,6 +85,24 @@ public class PlantaDAO implements IDAOPlanta{
 	}
 	
 	
+	@Override
+	public List<Planta> findAllByIdMaceta(Long idMaceta) throws DAOException{
+		String query1  = "SELECT p FROM Planta p where p.maceta.id=:idMaceta";
+		List<Planta> plantas = new ArrayList<Planta>();
+		try {
+			init();
+			plantas = manager.createQuery(query1,Planta.class)
+							.setParameter("idMaceta", idMaceta)
+							.getResultList();
+		} catch (Exception e) {
+			log.error("Error", e);
+			throw new DAOException(e);
+		}finally {
+			destroy();
+		}
+		return plantas;
+	}
+
 	/**
 	 * Método para crear un Planta de la base de datos
 	 * @param element objeto de tipo Planta
