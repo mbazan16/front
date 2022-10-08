@@ -8,14 +8,14 @@ package com.front.pTipoAnt.data;
 public class Departamento {
 	private Long id;
 	private String nombre;
-	private Long idManager;
+	private Integer idManager;
 	private Long idDireccion;
 	
 	public Departamento() {
 		super();
 	}
 
-	public Departamento(Long id, String nombre, Long idManager, Long idLocalizacion) {
+	public Departamento(Long id, String nombre, Integer idManager, Long idLocalizacion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -39,11 +39,11 @@ public class Departamento {
 		this.nombre = nombre;
 	}
 
-	public Long getIdManager() {
+	public Integer getIdManager() {
 		return idManager;
 	}
 
-	public void setIdManager(Long idManager) {
+	public void setIdManager(Integer idManager) {
 		this.idManager = idManager;
 	}
 

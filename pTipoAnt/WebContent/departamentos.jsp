@@ -19,10 +19,10 @@ function verElemento(id){
 </style>
 <head>
 <meta charset="ISO-8859-1">
-<title>Departamentoes</title>
+<title>Departamentos</title>
 </head>
 <body>
-Departamentoes
+<h1>Departamentos</h1>
 <div >
 <form method="post" action="./departamento" id="formDepartamento">
  <input hidden="true" type="text" name="accion" value="" />
@@ -31,8 +31,7 @@ Departamentoes
 </div>
 <ul>
 <c:forEach items="${listado}" var="elemento">
-<li>${elemento.nombre} 
-<img src="./static/img/lupa.png" width=25 height=25 onClick="javascript:verElemento(${elemento.id})">
+<li><a href="javascript:verElemento(${elemento.id})">${elemento.nombre}</a>
 </li>
 </c:forEach>
 </ul>

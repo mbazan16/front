@@ -32,6 +32,7 @@ function aModificar(){
 <body>
 <c:choose>
 <c:when test="${elemento!=null}">
+<h1>Departamento</h1>
 <div id="panelView" >
 Id: ${elemento.id}<br>
 Nombre: ${elemento.nombre}<br>
@@ -55,6 +56,7 @@ IdManager:${elemento.idManager}<br>
 </div>
 </c:when>
 <c:otherwise>
+<h1>Nuevo Departamento</h1>
 <div id="panelCrearForm">
 <form method="post" action="./departamento" id="formCrearDepartamento">
  <input hidden="true" type="text"  name="accion" value="C" /> 

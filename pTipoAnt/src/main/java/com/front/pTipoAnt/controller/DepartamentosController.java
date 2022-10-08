@@ -28,6 +28,7 @@ public class DepartamentosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	IServicio<Long,Departamento> servicio;
+
 	
 	private static final Logger log = Logger.getLogger(DepartamentosController.class);
 

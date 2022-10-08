@@ -17,6 +17,7 @@ public class ServDepartamento implements IServicio<Long,Departamento>{
 	private static final Logger log = Logger.getLogger(ServDepartamento.class);
 
 	IDAO<Long,Departamento> iDao ;
+	
 
 	public ServDepartamento() {
 		super();

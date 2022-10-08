@@ -19,6 +19,10 @@ public class DAOException extends Exception {
 	public TipoException getTipoExcepcion() {
 		return tipoExcepcion;
 	}
+	
+	  public String getMessage() {
+	        return this.tipoExcepcion.toString();
+	    }
 
 	
 	
